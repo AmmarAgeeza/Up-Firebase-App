@@ -92,7 +92,18 @@ class LoginScreen extends StatelessWidget {
                         state is ForgetPasswordLoadingState
                             ? const CircularProgressIndicator()
                             : TextButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  if (cubit
+                                      .emailLoginController.text.isNotEmpty) {
+                                    //1
+                                    // BlocProvider.of<AuthCubit>(context)
+                                    //     .forgetPassword();
+                                    //2
+                                    // cubit.forgetPassword();
+                                    //3.
+                                    context.read<AuthCubit>().forgetPassword();
+                                  }
+                                },
                                 child: const Text(
                                   'Forget Password?',
                                 ),

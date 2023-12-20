@@ -24,6 +24,38 @@ class AuthRepo {
     }
   }
 //register
-
+Future<Either<String, String>> register({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final userData = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return const Right('Email Created Sucessfully');
+    } on FirebaseAuthException catch (e) {
+       if (e.code == 'weak-password') {
+        return const Left('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        return const Left('The account already exists for that email.');
+      } else {
+        return Left(e.code);
+      }
+    }
+  }
 //forget password
+  Future<Either<String, String>> forgetPassword({required String email}) async {
+    try {
+      final res =
+          await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return const Right('Check your mail');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return const Left('No user found for that email.');
+      } else {
+        return Left(e.message.toString());
+      }
+    }
+  }
 }
