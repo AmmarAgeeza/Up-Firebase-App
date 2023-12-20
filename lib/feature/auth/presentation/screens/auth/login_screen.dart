@@ -108,8 +108,12 @@ class LoginScreen extends StatelessWidget {
                         : CustomButton(
                             text: 'Sign in',
                             onPressed: () async {
-                              if (cubit.formLoginKey.currentState!
-                                  .validate()) {}
+                              if (cubit.formLoginKey.currentState!.validate()) {
+                                // difftent way to use cubit
+                                // read => not rebuild
+                                //watch => rebuild
+                                context.read<AuthCubit>().login();
+                              }
                             },
                           ),
                     SizedBox(
