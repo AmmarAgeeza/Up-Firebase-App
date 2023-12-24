@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_firebase/feature/chat/presentation/screens/chat_screen.dart';
 
 import '/feature/auth/presentation/screens/auth/login_screen.dart';
 import '/feature/auth/presentation/screens/auth/register_screen.dart';
@@ -11,6 +12,7 @@ class Routes {
   static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
+  static const String chat = '/chat';
 }
 
 class AppRoutes {
@@ -24,6 +26,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case Routes.register:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
+      case Routes.chat:
+        return MaterialPageRoute(builder: (_) => const ChatScreen());
 
       default:
         return MaterialPageRoute(
