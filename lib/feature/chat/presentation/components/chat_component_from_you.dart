@@ -34,7 +34,6 @@ class ChatComponentFromYou extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(message),
-            Text(time.toDate().hour.toString()),
             Text(
               '${time.toDate().hour > 12 ? time.toDate().hour - 12 : time.toDate().hour}:${time.toDate().minute} ${time.toDate().hour > 12 ? 'PM' : 'AM'}',
             ),

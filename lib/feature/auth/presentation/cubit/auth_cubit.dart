@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_firebase/core/database/cache/cache_helper.dart';
+import 'package:test_firebase/feature/auth/data/models/user_model.dart';
 
+import '../../../../core/services/service_locator.dart';
 import '../../data/repository/auth_repo.dart';
 import 'auth_state.dart';
 
@@ -40,6 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ChangeDepartmentValueState());
   }
 
+  UserModel? userModel;
 // login
   void login() async {
     emit(LoginLoadingState());
@@ -49,7 +53,11 @@ class AuthCubit extends Cubit<AuthState> {
     );
     result.fold(
       (l) => emit(LoginErrorState(message: l)),
-      (r) => emit(LoginSucessfulltyState(message: r)),
+      (r) {
+        userModel = r;
+        sl<CacheHelper>().saveData(key: 'id', value: r.id);
+        emit(LoginSucessfulltyState(message: 'Login Sucessfullty'));
+      },
     );
   }
 
@@ -64,12 +72,16 @@ class AuthCubit extends Cubit<AuthState> {
       (r) => emit(ForgetPasswordSucessfulltyState(message: r)),
     );
   }
+
   //register
   void register() async {
     emit(RegisterLoadingState());
     final result = await authRepo.register(
       email: emailRegisterController.text,
-      password: passwordRegisterController.text
+      password: passwordRegisterController.text,
+      name: nameController.text,
+      phoneNumber: phoneNumberController.text,
+      department: dropDownValueDepartment,
     );
     result.fold(
       (l) => emit(RegisterErrorState(message: l)),
