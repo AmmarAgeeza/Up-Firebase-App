@@ -5,4 +5,5 @@ class AppAssets {
   static const String onBoarding3 = '${path}on_boarding_2.png';
   static const String auth = '${path}auth.jpeg';
   static const String chats = '${path}chats.png';
+  static const String blood = '${path}blood.jpeg';
 }

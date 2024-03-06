@@ -130,10 +130,10 @@ class _OnBoaringScreensState extends State<OnBoaringScreens> {
                                 .saveData(
                                     key: AppStrings.onBoardingKey, value: true)
                                 .then((value) {
-                              print('onBoarding is Visited');
+                              // print('onBoarding is Visited');
                               navigate(context: context, route: Routes.login);
                             }).catchError((e) {
-                              print(e.toString());
+                              // print(e.toString());
                             });
                           })
                   ],
