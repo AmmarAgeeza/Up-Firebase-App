@@ -13,7 +13,7 @@ void main() async {
     sl<CacheHelper>().init(),
     Firebase.initializeApp(),
   ]);
-
+  // await sl<CacheHelper>().sharedPreferences.clear();
   runApp(
     MultiBlocProvider(
       providers: [

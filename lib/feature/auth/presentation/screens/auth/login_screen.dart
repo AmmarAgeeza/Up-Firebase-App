@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/routes/app_routes.dart';
 import '../../../../../core/utils/app_assets.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/commons.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
@@ -21,16 +22,12 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSucessfulltyState) {
             showToast(message: state.message, state: ToastStates.success);
+            navigateRepacement(context: context, route: Routes.home);
           }
           if (state is LoginErrorState) {
             showToast(message: state.message, state: ToastStates.error);
           }
-          if (state is ForgetPasswordSucessfulltyState) {
-            showToast(message: state.message, state: ToastStates.success);
-          }
-          if (state is ForgetPasswordErrorState) {
-            showToast(message: state.message, state: ToastStates.error);
-          }
+          
         },
         builder: (context, state) {
           var cubit = AuthCubit.get(context);
@@ -51,15 +48,15 @@ class LoginScreen extends StatelessWidget {
                     ),
                     //email
                     CustomTextFormField(
-                        lable: 'E-mail',
+                        lable: 'البريد الإلكترونى',
                         controller: cubit.emailLoginController,
                         type: TextInputType.emailAddress,
                         validate: (val) {
                           if (val!.isEmpty) {
-                            return 'Please Enter E-mail';
+                            return 'أدخل البريد الالكترونى صالح';
                           }
                           if (!(val.contains('@gmail.com'))) {
-                            return 'E-mail must contains @gmail.com';
+                            return 'أدخل البريد الالكترونى صالح';
                           }
                           return null;
                         }),
@@ -68,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     //password
                     CustomTextFormField(
-                        lable: 'Password',
+                        lable: 'كلمة السر',
                         controller: cubit.passwordLoginController,
                         type: TextInputType.visiblePassword,
                         isPassword: cubit.isPasswordShown,
@@ -78,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         validate: (val) {
                           if (val!.isEmpty) {
-                            return 'Please Enter valid password';
+                            return 'أدخل كلمة سر صالحة';
                           }
                           return null;
                         }),
@@ -92,9 +89,13 @@ class LoginScreen extends StatelessWidget {
                         state is ForgetPasswordLoadingState
                             ? const CircularProgressIndicator()
                             : TextButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  navigate(
+                                      context: context,
+                                      route: Routes.forgetPassword);
+                                },
                                 child: const Text(
-                                  'Forget Password?',
+                                  'نسيت كلمة السر؟',
                                 ),
                               ),
                       ],
@@ -104,12 +105,15 @@ class LoginScreen extends StatelessWidget {
                     ),
                     //sign in button
                     state is LoginLoadingState
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator(
+                            color: AppColors.primary,
+                          )
                         : CustomButton(
-                            text: 'Sign in',
+                            text: 'تسجيل الدخول',
                             onPressed: () async {
-                              if (cubit.formLoginKey.currentState!
-                                  .validate()) {}
+                              if (cubit.formLoginKey.currentState!.validate()) {
+                                cubit.login();
+                              }
                             },
                           ),
                     SizedBox(
@@ -123,9 +127,9 @@ class LoginScreen extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(
-                                text: 'Don\'t have an account?',
+                                text: 'ليس لديك حساب؟',
                                 style: TextStyle(color: Colors.black)),
-                            TextSpan(text: ' Sign up'),
+                            TextSpan(text: ' إنشاء حساب'),
                           ],
                         ),
                       ),

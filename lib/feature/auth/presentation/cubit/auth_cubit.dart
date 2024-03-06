@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_firebase/core/database/cache/cache_helper.dart';
 
+import '../../../../core/services/service_locator.dart';
+import '../../data/models/user_model.dart';
 import '../../data/repository/auth_repo.dart';
 import 'auth_state.dart';
 
@@ -19,7 +22,9 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> formLoginKey = GlobalKey<FormState>();
   final GlobalKey<FormState> formRegisterKey = GlobalKey<FormState>();
-  // final userAccount = FirebaseAuth.instance;
+  final GlobalKey<FormState> formForgetPasswordKey = GlobalKey<FormState>();
+  final TextEditingController emailForgetPasswordController =
+      TextEditingController();
 
   IconData suffixIcon = Icons.visibility;
   bool isPasswordShown = true;
@@ -30,19 +35,60 @@ class AuthCubit extends Cubit<AuthState> {
     emit(ChangePasswordIconState());
   }
 
-  String dropDownValueDepartment = 'SC';
-
-  // List of items in our dropdown menu
-  List<String> itemsDepartments = ['SC', 'AI', 'CS', 'IS'];
-
-  void changeDepartmentValue(d) {
-    dropDownValueDepartment = d!;
-    emit(ChangeDepartmentValueState());
+  UserModel? userModel;
+// login
+  void login() async {
+    emit(LoginLoadingState());
+    var res = await authRepo.login(
+      email: emailLoginController.text,
+      password: passwordLoginController.text,
+    );
+    res.fold((l) => emit(LoginErrorState(message: l)), (r) {
+      userModel = r;
+      sl<CacheHelper>().saveData(key: 'id', value: r.uid);
+      emit(
+        LoginSucessfulltyState(message: 'تم تسجيل الدخول بنجاح'),
+      );
+    });
   }
 
-// login
- 
-
   //forget password
-  
+  void forgetPassword() async {
+    emit(ForgetPasswordLoadingState());
+    var res = await authRepo.forgetPassword(
+      email: emailForgetPasswordController.text,
+    );
+    res.fold(
+      (l) => emit(ForgetPasswordErrorState(message: l)),
+      (r) {
+        emailForgetPasswordController.clear();
+        emit(
+          ForgetPasswordSucessfulltyState(message: r),
+        );
+      },
+    );
+  }
+
+  //register
+  void register() async {
+    emit(RegisterLoadingState());
+    var res = await authRepo.register(
+      email: emailRegisterController.text,
+      password: passwordRegisterController.text,
+      name: nameController.text,
+      phone: phoneNumberController.text,
+    );
+    res.fold(
+      (l) => emit(RegisterErrorState(message: l)),
+      (r) {
+        nameController.clear();
+        emailRegisterController.clear();
+        passwordRegisterController.clear();
+        phoneNumberController.clear();
+        emit(
+          RegisterSucessfulltyState(message: r),
+        );
+      },
+    );
+  }
 }

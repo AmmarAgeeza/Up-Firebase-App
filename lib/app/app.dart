@@ -14,6 +14,12 @@ class UpChatApp extends StatelessWidget {
       designSize: const Size(428, 926),
       builder: (context, child) {
         return MaterialApp(
+          builder: (context, child) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: child!,
+            );
+          },
           title: AppStrings.appName,
           theme: getAppTheme(),
           debugShowCheckedModeBanner: false,

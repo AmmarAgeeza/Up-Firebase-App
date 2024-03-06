@@ -34,7 +34,7 @@ void showToast({
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: getState(state),
       textColor: Colors.white,
@@ -53,5 +53,3 @@ Color getState(ToastStates state) {
       return AppColors.primary;
   }
 }
-
-

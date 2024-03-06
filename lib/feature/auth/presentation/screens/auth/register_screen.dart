@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/routes/app_routes.dart';
 import '../../../../../core/utils/app_assets.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/commons.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
@@ -16,178 +17,131 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        var cubit = AuthCubit.get(context);
-        final scroll = ScrollController();
+      body: SafeArea(
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is RegisterSucessfulltyState) {
+              showToast(message: state.message, state: ToastStates.success);
+              navigateRepacement(route: Routes.login, context: context);
+            }
+            if (state is RegisterErrorState) {
+              showToast(message: state.message, state: ToastStates.error);
+            }
+          },
+          builder: (context, state) {
+            var cubit = AuthCubit.get(context);
+            return state is RegisterLoadingState
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: cubit.formRegisterKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            SizedBox(
+                                height: 300.h,
+                                width: double.infinity,
+                                // color: AppColor.primaryColor,
+                                child: Image.asset(AppAssets.auth)),
+                            SizedBox(
+                              height: 15.h,
+                            ),
 
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: cubit.formRegisterKey,
-            child: SingleChildScrollView(
-              controller: scroll,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  SizedBox(
-                      height: 300.h,
-                      width: double.infinity,
-                      // color: AppColor.primaryColor,
-                      child: Image.asset(AppAssets.auth)),
-                  SizedBox(
-                    height: 15.h,
-                  ),
+                            //name
+                            CustomTextFormField(
+                                lable: 'الاسم كامل',
+                                controller: cubit.nameController,
+                                type: TextInputType.name,
+                                validate: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'مطلوب';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            //phone
+                            CustomTextFormField(
+                                lable: 'رقم الهاتف',
+                                controller: cubit.phoneNumberController,
+                                type: TextInputType.phone,
+                                validate: (val) {
+                                  if (val!.isEmpty || val.length != 11) {
+                                    return 'أدخل رقم هاتف صالح';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            //email
+                            CustomTextFormField(
+                                lable: 'البريد الالكترونى',
+                                controller: cubit.emailRegisterController,
+                                type: TextInputType.emailAddress,
+                                validate: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'أدخل البريد الالكترونى صالح';
+                                  }
+                                  if (!(val.contains('@gmail.com'))) {
+                                    return 'أدخل البريد الالكترونى صالح';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 15.h,
+                            ),
 
-                  //name
-                  CustomTextFormField(
-                      lable: 'Full Name',
-                      controller: cubit.nameController,
-                      type: TextInputType.name,
-                      validate: (val) {
-                        if (val!.isEmpty) {
-                          return 'Please Enter E-mail';
-                        }
-                        return null;
-                      }),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  //phone
-                 CustomTextFormField(
-                      lable:  'Phone Number',
-                      controller: cubit.phoneNumberController,
-                      type: TextInputType.phone,
-                      validate: (val) {
-                        if (val!.isEmpty || val.length != 11) {
-                          return 'Please Enter valid phone number';
-                        }
-                        return null;
-                      }),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  //email
-                  CustomTextFormField(
-                      lable:  'E-mail',
-                      controller: cubit.emailRegisterController,
-                      type: TextInputType.emailAddress,
-                      validate: (val) {
-                        if (val!.isEmpty) {
-                          return 'Please Enter E-mail';
-                        }
-                        if (!(val.contains('@gmail.com'))) {
-                          return 'E-mail must contains @gmail.com';
-                        }
-                        return null;
-                      }),
-                  SizedBox(
-                    height: 15.h,
-                  ),
+                            //password
+                            CustomTextFormField(
+                                lable: 'كلمة السر',
+                                controller: cubit.passwordRegisterController,
+                                type: TextInputType.visiblePassword,
+                                isPassword: cubit.isPasswordShown,
+                                icon: cubit.suffixIcon,
+                                suffixIconOnPressed: () {
+                                  cubit.changePasswordIcon();
+                                },
+                                validate: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'أدخل كلمة سر صالحة';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 15.h,
+                            ),
 
-                  //password
-                  CustomTextFormField(
-                      
-                    
-                      lable: 'Password',
-                      controller: cubit.passwordRegisterController,
-                      type: TextInputType.visiblePassword,
-                      isPassword: cubit.isPasswordShown,
-                      icon: cubit.suffixIcon,
-                      suffixIconOnPressed: () {
-                        cubit.changePasswordIcon();
-                      },
-                      validate: (val) {
-                        if (val!.isEmpty) {
-                          return 'Please Enter valid password';
-                        }
-                        return null;
-                      }),
-                  SizedBox(
-                    height: 15.h,
-                  ),
+                            //submit button
 
-                  customDropMenu(
-                      function: (d) {
-                        cubit.changeDepartmentValue(d);
-                      },
-                      dropDownValue: cubit.dropDownValueDepartment,
-                      items: cubit.itemsDepartments.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      title: 'Choose your Department'),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  //submit button
-
-                  CustomButton(
-                    text: 'Submit',
-                    
-                    onPressed: () async {
-                      if (cubit.formRegisterKey.currentState!.validate()) {
-                        // await cubit.registerUser(
-                        //   context: context,
-                        // );
-                        cubit.emailRegisterController.clear();
-                        cubit.passwordRegisterController.clear();
-                        cubit.phoneNumberController.clear();
-                        navigate(
-                           route: Routes.login, context: context);
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    )
-  ),
+                            CustomButton(
+                              text: 'إنشاء حساب',
+                              onPressed: () async {
+                                if (cubit.formRegisterKey.currentState!
+                                    .validate()) {
+                                  cubit.register();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ),
     );
   }
 }
-Widget customDropMenu(
-      {required String title,
-      required String dropDownValue,
-      required Function(String?) function,
-      required List<DropdownMenuItem<String>>? items}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 20),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(15)),
-          child: DropdownButton(
-           
-            isExpanded: true,
-            underline: Container(),
-            value: dropDownValue,
-            borderRadius: BorderRadius.circular(10),
-            // dropdownColor: Colors.deepOrange,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items,
-            onChanged: function,
-          ),
-        ),
-      ],
-    );
-  }

@@ -29,3 +29,14 @@ class ForgetPasswordErrorState extends AuthState {
 
 class ChangeDepartmentValueState extends AuthState {}
 
+class RegisterLoadingState extends AuthState {}
+class RegisterSucessfulltyState extends AuthState {
+   final String message;
+
+  RegisterSucessfulltyState({required this.message});
+}
+class RegisterErrorState extends AuthState {
+  final String message;
+
+  RegisterErrorState({required this.message});
+}

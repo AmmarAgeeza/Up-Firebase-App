@@ -23,13 +23,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateTo() async {
-    bool isVisted = await sl<CacheHelper>().getData(
-          key: AppStrings.onBoardingKey,
+    bool isLogin = await sl<CacheHelper>().getData(
+          key: 'id',
         ) ??
         false;
     Future.delayed(const Duration(seconds: 3), () {
-      navigate(
-          context: context, route: isVisted ? Routes.login : Routes.onBoarding);
+      navigateRepacement(context: context, route: isLogin?Routes.home:Routes.login);
     });
   }
 
