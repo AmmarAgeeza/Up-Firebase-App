@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../data/models/donator_model.dart';
@@ -46,7 +47,7 @@ class DonatorsListScreen extends StatelessWidget {
                     children: [
                       Text(donators[index].phone),
                       Text(donators[index].address),
-                      Text(donators[index].date),
+                      Text(DateFormat.yMd('ar').format(donators[index].date)),
                     ],
                   ),
                   trailing: Text(

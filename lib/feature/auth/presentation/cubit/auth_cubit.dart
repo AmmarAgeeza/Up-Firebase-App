@@ -46,6 +46,8 @@ class AuthCubit extends Cubit<AuthState> {
     res.fold((l) => emit(LoginErrorState(message: l)), (r) {
       userModel = r;
       sl<CacheHelper>().saveData(key: 'id', value: r.uid);
+      emailLoginController.clear();
+      passwordLoginController.clear();
       emit(
         LoginSucessfulltyState(message: 'تم تسجيل الدخول بنجاح'),
       );

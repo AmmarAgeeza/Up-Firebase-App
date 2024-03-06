@@ -154,6 +154,7 @@ class HomeScreen extends StatelessWidget {
                                       controller:
                                           context.read<HomeCubit>().numbers,
                                       type: TextInputType.number,
+                                      textInputAction: TextInputAction.done,
                                       hint: 'عدد الأكياس',
                                       validate: (p0) {
                                         if (p0!.isEmpty ||
@@ -179,32 +180,28 @@ class HomeScreen extends StatelessWidget {
                             //add new donator
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: CustomButton(
-                                      onPressed: () {
-                                        navigate(
-                                            context: context,
-                                            route: Routes.donatorsList);
-                                      },
-                                      text: 'عرض التقرير',
-                                      // width: 250.w,
-                                    ),
+                                  CustomButton(
+                                    onPressed: () {
+                                      navigate(
+                                          context: context,
+                                          route: Routes.donatorsList);
+                                    },
+                                    text: 'عرض التقرير',
+                                    // width: 250.w,
                                   ),
                                   const SizedBox(
-                                    width: 15,
+                                    height: 15,
                                   ),
-                                  Expanded(
-                                    child: CustomButton(
-                                      onPressed: () {
-                                        navigate(
-                                            context: context,
-                                            route: Routes.addDonator);
-                                      },
-                                      text: 'تسجيل متبرع جديد',
-                                      // width: 250.w,
-                                    ),
+                                  CustomButton(
+                                    onPressed: () {
+                                      navigate(
+                                          context: context,
+                                          route: Routes.addDonator);
+                                    },
+                                    text: 'تسجيل متبرع جديد',
+                                    // width: 250.w,
                                   ),
                                 ],
                               ),
@@ -216,12 +213,23 @@ class HomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: CustomButton(
                                 onPressed: () async {
-                                  await sl<CacheHelper>()
-                                      .sharedPreferences
-                                      .clear()
-                                      .then((value) => navigateRepacement(
-                                          context: context,
-                                          route: Routes.login));
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext ctx) =>
+                                        ConfirmationDialog(
+                                      alertMsg:
+                                          'هل متأكد من تسجيل الخروج من التطبيق؟',
+                                      onTapConfirm: () async {
+                                        Navigator.pop(context);
+                                        await sl<CacheHelper>()
+                                            .sharedPreferences
+                                            .clear()
+                                            .then((value) => navigateRepacement(
+                                                context: context,
+                                                route: Routes.login));
+                                      },
+                                    ),
+                                  );
                                 },
                                 text: 'تسجيل الخروج من التطبيق',
                                 // width: 250.w,

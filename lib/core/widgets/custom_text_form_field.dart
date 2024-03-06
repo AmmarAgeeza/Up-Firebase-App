@@ -12,7 +12,10 @@ class CustomTextFormField extends StatelessWidget {
     this.validate,
     this.isPassword = false,
     this.icon,
-    this.suffixIconOnPressed, required this.type,
+    this.suffixIconOnPressed,
+    required this.type,
+    this.readOnly = false,
+    this.textInputAction = TextInputAction.next,
   });
   final TextEditingController controller;
   final String? hint;
@@ -21,18 +24,21 @@ class CustomTextFormField extends StatelessWidget {
   final bool isPassword;
   final IconData? icon;
   final VoidCallback? suffixIconOnPressed;
-    final TextInputType type;
+  final TextInputType type;
+  final bool readOnly;
+  final TextInputAction textInputAction;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       controller: controller,
       cursorColor: AppColors.primary,
       validator: validate,
       obscureText: isPassword,
       keyboardType: type,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
-      
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
         hintText: hint,
         labelText: lable,

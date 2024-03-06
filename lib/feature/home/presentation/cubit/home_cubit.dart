@@ -27,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
         address: addressController.text,
         phone: phoneNumberController.text,
         type: type.text,
-        date: date.text,
+        date: currentDate,
       ),
     );
     res.fold(
@@ -69,6 +69,28 @@ class HomeCubit extends Cubit<HomeState> {
       }
     } catch (e) {
       emit(DecreaseBagsNumbersErrorState(message: 'حدث خطأ - حاول مرة أخرى'));
+    }
+  }
+
+  DateTime currentDate = DateTime.now();
+  void getDate(context) async {
+    emit(GetDateLoadingState());
+    DateTime? pickedDate = await showDatePicker(
+      locale: const Locale('ar', 'EG'),
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      // initialDatePickerMode: DatePickerMode.day,
+      // initialEntryMode: DatePickerEntryMode.inputOnly,
+    );
+
+    if (pickedDate != null) {
+      currentDate = pickedDate;
+      emit(GetDateSucessState());
+    } else {
+      log('pickedDate == null');
+      emit(GetDateErrorState());
     }
   }
 }

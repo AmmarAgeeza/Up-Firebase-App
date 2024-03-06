@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test_firebase/feature/home/presentation/cubit/home_cubit.dart';
 
@@ -18,7 +19,6 @@ class UpChatApp extends StatelessWidget {
       builder: (context, child) {
         return BlocProvider(
           create: (context) => HomeCubit(sl()),
-          
           child: MaterialApp(
             builder: (context, child) {
               return Directionality(
@@ -26,6 +26,15 @@ class UpChatApp extends StatelessWidget {
                 child: child!,
               );
             },
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+            ],
+            // localizationsDelegates: const [
+            //   GlobalMaterialLocalizations.delegate,
+            //   GlobalWidgetsLocalizations.delegate,
+            //   GlobalCupertinoLocalizations.delegate,
+            // ],
+            supportedLocales: const [Locale('ar', 'EG'), Locale('en', 'US')],
             title: AppStrings.appName,
             theme: getAppTheme(),
             debugShowCheckedModeBanner: false,

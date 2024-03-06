@@ -3,6 +3,9 @@ part of 'home_cubit.dart';
 sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
+class GetDateLoadingState extends HomeState {}
+class GetDateErrorState extends HomeState {}
+class GetDateSucessState extends HomeState {}
 class AddDonatorLoadingState extends HomeState {}
 class AddDonatorSucessfulltyState extends HomeState {
    final String message;

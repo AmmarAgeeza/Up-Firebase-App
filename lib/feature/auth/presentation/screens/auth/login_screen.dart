@@ -27,7 +27,6 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginErrorState) {
             showToast(message: state.message, state: ToastStates.error);
           }
-          
         },
         builder: (context, state) {
           var cubit = AuthCubit.get(context);
@@ -70,6 +69,7 @@ class LoginScreen extends StatelessWidget {
                         type: TextInputType.visiblePassword,
                         isPassword: cubit.isPasswordShown,
                         icon: cubit.suffixIcon,
+                        textInputAction: TextInputAction.done,
                         suffixIconOnPressed: () {
                           cubit.changePasswordIcon();
                         },

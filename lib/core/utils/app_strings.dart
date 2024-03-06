@@ -1,6 +1,6 @@
 class AppStrings {
-   static const String appName = 'بنك الدم';
-  static const String splash = 'بنك الدم';
+  static const String appName = 'نقطة حياة';
+  static const String splash = 'نقطة حياة';
   static const String skip = 'Skip';
   static const String back = 'Back';
   static const String next = 'Next';

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/database/cache/cache_helper.dart';
 import '../../../../../core/routes/app_routes.dart';
 import '../../../../../core/services/service_locator.dart';
+import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/commons.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,20 +32,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.white,
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image.asset(AppAssets.logo),
-          SizedBox(height: 24.h),
-          Text(
-            AppStrings.appName,
-            style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                  fontSize: 40,
-                  color: AppColors.white,
-                ),
-          )
+          Image.asset(AppAssets.auth),
+          // SizedBox(height: 24.h),
+          // Text(
+          //   AppStrings.appName,
+          //   style: Theme.of(context).textTheme.displayLarge!.copyWith(
+          //         fontSize: 40,
+          //         color: AppColors.primary,
+          //       ),
+          // )
         ],
       )),
     );

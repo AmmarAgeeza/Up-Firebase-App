@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/routes/app_routes.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/commons.dart';
@@ -22,7 +21,7 @@ class RegisterScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is RegisterSucessfulltyState) {
               showToast(message: state.message, state: ToastStates.success);
-              navigateRepacement(route: Routes.login, context: context);
+              Navigator.pop(context);
             }
             if (state is RegisterErrorState) {
               showToast(message: state.message, state: ToastStates.error);
@@ -110,6 +109,7 @@ class RegisterScreen extends StatelessWidget {
                                 type: TextInputType.visiblePassword,
                                 isPassword: cubit.isPasswordShown,
                                 icon: cubit.suffixIcon,
+                                textInputAction: TextInputAction.done,
                                 suffixIconOnPressed: () {
                                   cubit.changePasswordIcon();
                                 },

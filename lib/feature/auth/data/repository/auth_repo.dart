@@ -31,7 +31,7 @@ class AuthRepo {
       } else if (e.code == 'wrong-password') {
         return const Left('يوجد خطأ فى البريد الالكترونى أو كلمة السر');
       } else {
-        return const Left('يوجد خطأ فى البريد الالكترونى أو كلمة السر');
+      return const Left('رجاء المحاولة مرة أخرى');
       }
     } catch (e) {
       return const Left('رجاء المحاولة مرة أخرى');

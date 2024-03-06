@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/commons.dart';
@@ -109,15 +110,17 @@ class AddDonatorScreen extends StatelessWidget {
                             ),
                             //date
                             CustomTextFormField(
-                                lable: 'التاريخ',
-                                controller: cubit.date,
-                                type: TextInputType.datetime,
-                                validate: (val) {
-                                  if (val!.isEmpty) {
-                                    return 'مطلوب';
-                                  }
-                                  return null;
-                                }),
+                              hint: DateFormat.yMd('ar')
+                                  .format(cubit.currentDate),
+                              // lable: 'التاريخ',
+                              controller: cubit.date,
+                              type: TextInputType.text,
+                              readOnly: true,
+                              suffixIconOnPressed: () {
+                                cubit.getDate(context);
+                              },
+                              icon: Icons.calendar_month_rounded,
+                            ),
                             SizedBox(
                               height: 15.h,
                             ),

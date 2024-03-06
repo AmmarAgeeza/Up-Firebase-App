@@ -68,6 +68,7 @@ class ForgetPassword extends StatelessWidget {
                             CustomTextFormField(
                               type: TextInputType.emailAddress,
                               controller: cubit.emailForgetPasswordController,
+                              textInputAction: TextInputAction.done,
                               hint: "البريد الالكترونى",
                               // suffixIcon: Icon(Icons.email_outlined),
                               validate: (p0) {

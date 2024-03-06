@@ -48,7 +48,21 @@ dependencies:
   fluttertoast: ^8.2.4
   dartz: ^0.10.1
   smooth_page_indicator: ^1.1.0
-
+  flutter_native_splash:
+  flutter_localizations:
+        sdk: flutter
+  flutter_launcher_icons:
+  intl: ^0.18.1
+flutter_launcher_icons:
+  image_path: "images/blood.png"
+  android: true
+# flutter_native_splash-development.yaml
+flutter_native_splash:
+  image: images/blood.png
+  color: "#FFFFFF"
+  android_12:
+    image: images/blood.png
+  web: false
 dev_dependencies:
   flutter_test:
     sdk: flutter
